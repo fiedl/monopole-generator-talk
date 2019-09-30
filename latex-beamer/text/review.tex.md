@@ -52,10 +52,11 @@
   \begin{itemize}
     \item Tests fail with `terminate called after throwing an instance of 'boost::python::error_already_set'`
     \item Details: \url{https://github.com/fiedl/monopole-generator/issues/2}
-    \item To have this issue reproducible: Use github-actions (similar to travis ci, but faster and longer cpu time):
+    \item To have this issue reproducible: use github-actions (similar to travis ci, but faster and longer cpu time):
       \begin{itemize}
         \item \githubicon \url{https://github.com/fiedl/icecube-simulation-install}
         \item \githubicon \url{https://github.com/fiedl/monopole-generator-install}
+        \item This tests the build of icecube-simulation and the monopole-generator in a build matrix against the latest stable release of icecube-simulation and the current `trunk`, for ubuntu and macOS.
       \end{itemize}
   \end{itemize}
 
