@@ -20,8 +20,11 @@
 
 \newenvironment{ccode}{\minted{c}}{\endminted}
 
+\setmintedinline{fontsize=\currentfontsize}
+
 \setminted[bash]{
-  linenos=false
+  linenos=false,
+  fontsize=\normalsize
 }
 
 \setminted[ruby]{
@@ -42,7 +45,7 @@
 
 \newcommand\inlineruby[1]{\mintinline[breaklines, breakafter=.]{ruby}{#1}}
 
-\newcommand\inlinecode[1]{\inlineruby{#1}}
+\newcommand\inlinecode[1]{\mintinline[breaklines]{bash}{#1}}
 
 \newenvironment{ruby}{\minted{ruby}}{\endminted}
 \newenvironment{cypher}{\minted{cypher}}{\endminted}

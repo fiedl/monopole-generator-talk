@@ -9,12 +9,23 @@
 %\geometry{paperwidth=\mypaperwidth,paperheight=0.625\mypaperwidth} % 16:10
 \geometry{paperwidth=\mypaperwidth,paperheight=0.7\mypaperwidth}
 
-\title[Working with Graph Data in Ruby, \url{https://github.com/fiedl/graph-talk}]{Working with Graph Data in Ruby}
-\subtitle{YourPlatform Hackathon September Berlin\\Arbeitskreis Internet}
-\date{\today \\ \vspace*{2mm} \tiny{Document 2019-Roh0noo1} \normalsize}
+\title[Monopole-Generator Review, \url{https://github.com/fiedl/monopole-generator/issues/1}]{Monopole-Generator Review}
+\subtitle{Software Call 2019-10-02}
+\date{\today \\ \vspace*{2mm} \tiny{Document 2019-Lie5OiBi} \normalsize}
 
-\author[Sebastian Fiedlschuster]{Sebastian Fiedlschuster \\ \small{\url{https://github.com/fiedl/graph-talk}} \\ \small\texttt{sebastian@fiedlschuster.de}}
-%\institute{}
+\author[Sebastian Fiedlschuster \& Thorsten Glüsenkamp]{Sebastian Fiedlschuster \\ \small\url{https://github.com/fiedl/monopole-generator/issues/1} \\ \small\url{sebastian.fiedlschuster@fau.de} \\ \vspace{2mm} \normalsize Thorsten Glüsenkamp \\ \small\url{thorsten.gluesenkamp@fau.de}}
+\institute{Erlangen Centre for Astroparticle Physics}
+
+\newif\ifplacelogo % create a new conditional
+\placelogotrue % set it to true
+\logo{\ifplacelogo
+  \raisebox{-0.12cm}{\includegraphics[height=0.9cm]{img/DEgov-BMBF-Logo_en}}\hspace{0.3cm}
+  %\raisebox{-0.12cm}{\includegraphics[height=1cm]{img/icecube}}\hspace{0.3cm}
+  \raisebox{-0.12cm}{\includegraphics[height=1cm]{img/icecube-logo-side-text}}\hspace{0.3cm}
+  % \raisebox{-0.1cm}{\includegraphics[height=1cm]{img/DESY_logo_3C_web}}\hspace{0.5cm}
+  \raisebox{-0.1cm}{\includegraphics[height=1cm]{img/ecap}}\hspace{0.3cm}
+  \includegraphics[height=0.75cm]{img/Logo_FAU_DinA4_RGB}
+\fi}
 
 \input{lib/graphics}
 \input{lib/tikz}
@@ -24,6 +35,8 @@
 \input{lib/utf8}
 \input{lib/units}
 \input{lib/todo}
+\input{lib/icons}
+\input{lib/hyperlinks}
 
 %\includeonly{}
 
@@ -35,33 +48,14 @@
 
 \include{text/titlepage}
 
+\placelogofalse
+
 \section{Introduction}
 \include{text/motivation}
 
-\section{Problems and Approaches}
-\subsection{Problem: Indirect memberships}
-\include{text/problem_indirect_memberships}
-\subsection{Approach: Recursive definition}
-\include{text/approach_recursion_for_indirect_memberships}
-\subsection{Approach: Nested set}
-\include{text/approach_nested_set_for_indirect_memberships}
-\subsection{Problem: Many parents}
-\include{text/problem_many_parents}
-\subsection{Approach: Acts As Dag}
-\include{text/approach_acts_as_dag}
-\subsection{Problem: Time Dependence}
-\include{text/problem_time_dependence}
-\subsection{Approach: Validity Range}
-\include{text/approach_validity_range}
-\subsection{Problem: Complex Patterns}
-\include{text/problem_complex_patterns}
-\subsection{Approach: Use Acts As Dag for Complex Patterns}
-\include{text/approach_complex_acts_as_dag}
-\subsection{Approach: Use Neo4j Graph Database}
-\include{text/approach_neo4j}
+\section{Review state}
+\include{text/review}
 
-\section{In Practice}
-\include{text/in_practice}
 
 \section{Conclusion}
 \include{text/thanks}
