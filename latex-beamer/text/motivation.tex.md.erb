@@ -1,0 +1,29 @@
+%!TEX TS-program = ../make.zsh
+
+\begin{frame}[fragile]{Motivation and Scope}
+
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \scalebox{0.4}{
+        \centering<%= render "sample_graph" %>
+      }
+    \end{column}
+
+    \begin{column}{0.4\textwidth}
+
+      \begin{itemize}
+        \item Sometimes we need to model data as graphs: nodes with connections.
+        \item Queries should be expressive: \inlineruby{Group.find_by(name: "Jeder").descendant_groups}
+        \item Compare several approaches how to do this with ruby.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{Motivation and Scope}
+
+  \tableofcontents
+
+\end{frame}
+

@@ -1,0 +1,48 @@
+% Highlighted code listings, https://ctan.org/pkg/minted
+%
+% This requires pygments.
+%
+%     pip install Pygments
+%     cd /Library/TeX/texbin
+%     sudo ln -s `which pygmentize` pygmentize
+%     sudo tlmgr install fvextra
+%     sudo tlmgr update minted
+%
+\usepackage{fancyvrb}
+\usepackage[]{minted}
+
+\setminted{
+  tabsize=2, linenos, breaklines, autogobble, breakautoindent, frame=lines, framesep=2mm
+}
+
+\newenvironment{python}{\minted{python}}{\endminted}
+\newcommand\pythoninput[1]{\inputminted{python}{#1}}
+
+\newenvironment{ccode}{\minted{c}}{\endminted}
+
+\setminted[bash]{
+  linenos=false
+}
+
+\setminted[ruby]{
+  linenos=false,
+  frame=none,
+  breaklines,
+  breakafter=.(
+}
+
+\setminted[cypher]{
+  linenos=false,
+  frame=none,
+  breaklines,
+  breakafter=\>
+}
+
+\newenvironment{bash}{\minted{bash}}{\endminted}
+
+\newcommand\inlineruby[1]{\mintinline[breaklines, breakafter=.]{ruby}{#1}}
+
+\newcommand\inlinecode[1]{\inlineruby{#1}}
+
+\newenvironment{ruby}{\minted{ruby}}{\endminted}
+\newenvironment{cypher}{\minted{cypher}}{\endminted}
