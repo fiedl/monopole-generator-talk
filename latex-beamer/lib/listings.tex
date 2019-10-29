@@ -11,6 +11,8 @@
 \usepackage{fancyvrb}
 \usepackage[]{minted}
 
+\definecolor{bggrey}{rgb}{0.95,0.95,0.95}
+
 \setminted{
   tabsize=2, linenos, breaklines, autogobble, breakautoindent, frame=lines, framesep=2mm
 }
@@ -24,7 +26,9 @@
 
 \setminted[bash]{
   linenos=false,
-  fontsize=\normalsize
+  fontsize=\normalsize,
+  frame=none,
+  bgcolor=bggrey
 }
 
 \setminted[ruby]{
@@ -41,7 +45,16 @@
   breakafter=\>
 }
 
+\setminted[cpp]{
+  linenos=false,
+  frame=none,
+  breaklines,
+  bgcolor=bggrey,
+  fontsize=\footnotesize
+}
+
 \newenvironment{bash}{\minted{bash}}{\endminted}
+\newenvironment{cpp}{\minted{cpp}}{\endminted}
 
 \newcommand\inlineruby[1]{\mintinline[breaklines, breakafter=.]{ruby}{#1}}
 
