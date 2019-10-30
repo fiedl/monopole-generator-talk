@@ -143,12 +143,165 @@
   \end{itemize}
 \end{frame}
 
+
 \begin{frame}[fragile]{Testing against combo}
   \begin{itemize}
 
-    \item On Monday, I've learned that \href{http://code.icecube.wisc.edu/svn/meta-projects/simulation}{icecube-simulation} is discontinued and everyone should switch to \href{http://code.icecube.wisc.edu/svn/meta-projects/combo}{icecube-combo}.
+    \item On Monday, I've learned that \href{http://code.icecube.wisc.edu/svn/meta-projects/simulation}{icecube-simulation} is discontinued and everyone should switch to \href{http://code.icecube.wisc.edu/svn/meta-projects/combo}{icecube-combo}. \inprogress Better test against combo rather than simulation.
 
     \item \question{What is Combo? Where can I find documentation?}
+
+    \item \href{http://code.icecube.wisc.edu/svn/meta-projects/combo}{icecube-combo} has a \href{http://code.icecube.wisc.edu/svn/meta-projects/combo/trunk}{trunk}, a \href{http://code.icecube.wisc.edu/svn/meta-projects/combo/stable}{stable}, \href{http://code.icecube.wisc.edu/svn/meta-projects/combo/candidates}{candidates}, and \href{http://code.icecube.wisc.edu/svn/meta-projects/combo/releases}{releases}.
+
+    \begin{itemize}
+      \item \question{What is `stable`?} Is it pointing to the latest release or is it just `trunk` as soon as the tests are passing?
+      \item \question{How often are there new releases? How long are releases supported?} By \textit{supported} I mean that they are supposed to work when installing on a fresh system, i.e. they get patches when something upstream (boost, \dots) would break them.
+      \item \question{Is there already CI in place for `trunk`, `stable` and `candidates`?} I wasen't sure on \url{http://builds.icecube.wisc.edu}.
+      \item \question{How can I find the version numbers of projects included within a combo release?} For example: The version of \textit{clsim} that is included in `icecube-combo-V00-00-00-RC2`? From the `src/clsim/RELEASE_NOTES` it looks like there is code from the clsim `trunk` inside `icecube-combo-V00-00-00-RC2` that has not been inside a clsim release.
+    \end{itemize}
+
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Testing against combo with github actions}
+  \begin{itemize}
+
+    \item \href{https://github.com/features/actions}{Github actions} will be released on 13 November 2019.
+    \item With a beta account, I've already setup:
+
+    \begin{itemize}
+      \item \url{https://github.com/fiedl/icecube-combo-install} --- builds icecube-combo on ubuntu and macOS
+      \item \url{https://github.com/fiedl/monopole-generator-install} --- builds and tests the monopole generator against combo.
+    \end{itemize}
+
+    \item \question{Can I somehow use webhooks} to trigger a build when something is pushed to the `trunk` or the `stable`  on the svn?
+
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{CI results with github actions}
+  \begin{itemize}
+
+    \item Building icecube-combo
+      \begin{tabularx}{\textwidth}{r||c|c|c}
+          & trunk
+          & stable
+          & V00-00-00-RC2 \\ \hline\hline
+        macOS Mojave
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059867}{build: \done}
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059833}{build: \done}
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059801#step:3:0}{build: failed} \\
+        ubuntu 18.04
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059878}{build: \done}
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059852}{build: \done}
+          & \href{https://github.com/fiedl/icecube-combo-install/runs/280059816#step:3:0}{build: failed} \\
+      \end{tabularx}
+
+      \begin{onlyenv}<1>
+        How does it fail?
+
+        \begin{bash}
+          # ubuntu
+          /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/libboost_python.so: undefined reference to 'PyString_Size'
+          collect2: error: ld returned 1 exit status
+          make[2]:  [bin/clsim-make_safeprimes] Error 1
+          make[1]:  [clsim/CMakeFiles/clsim-make_safeprimes.dir/all] Error 2
+
+          # macOS
+          error: 'dispose' is missing exception specification 'noexcept'
+        \end{bash}
+      \end{onlyenv}
+
+    \item Biilding `monopole-generator` and `test-bins` against combo
+
+      \begin{onlyenv}<2->
+        \begin{tabularx}{\textwidth}{r||c|c|c}
+            & trunk
+            & stable
+            & V00-00-00-RC2 \\ \hline\hline
+          macOS Mojave
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536260}{build: \done}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536223}{build: \done}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536194}{?} \\
+          ubuntu 18.04
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536241#step:4:0}{build: failed}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536210#step:4:0}{build: failed}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536177}{?} \\
+        \end{tabularx}
+      \end{onlyenv}
+      \begin{onlyenv}<2>
+        How does it fail?
+
+        \begin{bash}
+          Python version mismatch found:
+          IceTray was compiled with 3.6.8
+          Currently running with    2.7.15+
+
+          Environment not (re)loaded.
+          [error]Process completed with exit code 2.
+        \end{bash}
+
+        Probably did something wrong with `env-shell.sh` again. But does work locally.
+      \end{onlyenv}
+
+    \item Monopole-generator python tests
+      \begin{onlyenv}<3->
+        \begin{tabularx}{\textwidth}{r||c|c|c}
+            & trunk
+            & stable
+            & V00-00-00-RC2 \\ \hline\hline
+          macOS Mojave
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536260#step:6:0}{build: \done}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536223#step:6:0}{build: \done}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536194}{?} \\
+          ubuntu 18.04
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536241}{?}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536210}{?}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536177}{?} \\
+        \end{tabularx}
+      \end{onlyenv}
+
+    \item Monopole-generator cxx tests
+      \begin{onlyenv}<4->
+        \begin{tabularx}{\textwidth}{r||c|c|c}
+            & trunk
+            & stable
+            & V00-00-00-RC2 \\ \hline\hline
+          macOS Mojave
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536260#step:7:0}{build: 4 fail}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536223#step:7:0}{build: 4 fail}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536194}{?} \\
+          ubuntu 18.04
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536241}{?}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536210}{?}
+            & \href{https://github.com/fiedl/monopole-generator-install/runs/280536177}{?} \\
+        \end{tabularx}
+      \end{onlyenv}
+
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{CI results with github actions}
+  \begin{itemize}
+
+    \item There are warnings like \textit{'Some parts of test disabled until I figure out what the actual avalues here should be'} in the tests. \inprogress I'll ignore them for now, until I'm familiar with the tool.
+
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Repository migration}
+  \begin{itemize}
+
+    \item Currently the source code lives in: \\
+      \url{http://code.icecube.wisc.edu/svn/projects/monopole-generator} \\
+      \url{https://github.com/fiedl/monopole-generator}
+
+    \item \question{What's the migration plan} to get it to \url{https://github.com/icecubeopensource/monopole-generator}?
+
+    \item \question{What about \url{https://github.com/icecube}?} Can't we get this?
 
   \end{itemize}
 \end{frame}
